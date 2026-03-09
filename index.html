@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Battle Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .game-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .play-options {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .play-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+        }
+        .play-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.6);
+        }
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .control-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #00ff88;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <h1 class="game-title">🚀 SPACE BATTLE 🚀</h1>
+        
+        <div class="play-options">
+            <h2>Choose Your Version:</h2>
+            
+            <a href="play_console.html" class="play-button">
+                🎮 Play Console Version
+            </a>
+            
+            <a href="#download" class="play-button">
+                💾 Download Desktop Version
+            </a>
+            
+            <a href="https://replit.com/@yourusername/space-battle" class="play-button">
+                🌐 Play Online Version
+            </a>
+        </div>
+
+        <div class="instructions">
+            <h2>🎮 Game Controls:</h2>
+            <div class="controls">
+                <div class="control-item">
+                    <strong>Move:</strong> Arrow Keys (↑↓←→)
+                </div>
+                <div class="control-item">
+                    <strong>Shoot:</strong> Spacebar
+                </div>
+                <div class="control-item">
+                    <strong>Exit:</strong> ESC Key
+                </div>
+                <div class="control-item">
+                    <strong>Goal:</strong> Destroy enemies & survive!
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h2>📁 How to Add Custom Graphics:</h2>
+            <p>Copy your images to the game folder and rename them:</p>
+            <ul>
+                <li><strong>player.png</strong> - Your spaceship (40x40px)</li>
+                <li><strong>enemy.png</strong> - Enemy ships (30x30px)</li>
+                <li><strong>bullet.png</strong> - Laser bullets (5x10px)</li>
+            </ul>
+        </div>
+
+        <div id="download">
+            <h2>💾 Download Game:</h2>
+            <p>Get the full desktop version with custom graphics support!</p>
+            <a href="SpaceBattleGame.exe" class="play-button" download>
+                ⬇️ Download Windows Version
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Create animated starfield background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        createStars();
+    </script>
+</body>
+</html>

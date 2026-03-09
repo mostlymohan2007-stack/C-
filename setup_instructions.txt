@@ -1,0 +1,28 @@
+QUICK SETUP INSTRUCTIONS
+========================
+
+You need a C++ compiler to build this game. Choose ONE option:
+
+OPTION 1: VISUAL STUDIO (RECOMMENDED)
+------------------------------------
+1. Download Visual Studio Community: https://visualstudio.microsoft.com/vs/community/
+2. Install and select "Desktop development with C++"
+3. Open "Developer Command Prompt for VS"
+4. Navigate to this folder: cd d:\c++\SpaceBattleGame
+5. Run: compile_vs.bat
+
+OPTION 2: CODEBLOCKS WITH MINGW
+-------------------------------
+1. Download CodeBlocks with MinGW: http://www.codeblocks.org/downloads
+2. Install with MinGW compiler included
+3. Add MinGW\bin to your system PATH
+4. Open Command Prompt and run: compile.bat
+
+OPTION 3: INSTALL SFML FIRST
+----------------------------
+1. Download SFML: https://www.sfml-dev.org/download.php
+2. Extract to C:\SFML
+3. Then follow Option 1 or 2 above
+
+GAME FILES ARE READY - JUST NEED COMPILER!
+==========================================

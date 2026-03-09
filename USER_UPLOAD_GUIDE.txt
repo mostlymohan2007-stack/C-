@@ -1,0 +1,61 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                    SPACE BATTLE - USER UPLOAD GUIDE                    ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🎮 HOW TO ADD YOUR CUSTOM IMAGES TO THE GAME:
+
+📁 STEP 1: CREATE OR DOWNLOAD IMAGES
+   • Player Ship: 40x40 pixels recommended
+   • Enemy Ships: 30x30 pixels recommended  
+   • Bullets: 5x10 pixels recommended
+   • Supported formats: PNG, JPG, BMP, TGA
+
+📂 STEP 2: COPY TO GAME FOLDER
+   Copy your image files to the same folder as SpaceBattleGame.exe
+
+🏷️  STEP 3: RENAME FILES (USE ANY OF THESE NAMES):
+
+   PLAYER SHIP:
+   ✅ player.png        (main name)
+   ✅ my_ship.png       (alternative)
+   ✅ custom_player.png (alternative)
+
+   ENEMY SHIPS:
+   ✅ enemy.png         (main name)
+   ✅ alien.png         (alternative)
+   ✅ invader.png      (alternative)
+
+   BULLETS:
+   ✅ bullet.png        (main name)
+   ✅ laser.png         (alternative)
+   ✅ plasma.png        (alternative)
+
+🚀 STEP 4: RUN THE GAME
+   • Start SpaceBattleGame.exe
+   • Game will automatically detect and load your custom images
+   • If no custom images found, game uses colored shapes
+
+✨ TIPS FOR BEST RESULTS:
+   • Use transparent backgrounds (PNG format)
+   • Keep images small for better performance
+   • Make sure images are centered and properly sized
+   • Test different names if one doesn't work
+
+🎨 EXAMPLE:
+   If you have "spaceship.png", rename it to "player.png"
+   If you have "badguy.png", rename it to "enemy.png"
+   If you have "shot.png", rename it to "bullet.png"
+
+🔄 GAME AUTOMATICALLY:
+   • Detects custom images on startup
+   • Falls back to default graphics if files missing
+   • Supports multiple naming options
+   • Works with any image format SFML supports
+
+🎯 READY TO PLAY!
+   Your custom images will appear immediately when you start the game!
+   No coding required - just copy, rename, and play!
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    ENJOY YOUR CUSTOMIZED GAME!                     ║
+╚══════════════════════════════════════════════════════════════════╝

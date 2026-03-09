@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Battle - Console Version</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .game-container {
+            text-align: center;
+            background: rgba(0, 20, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+        .game-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+        .game-screen {
+            background: #000;
+            border: 2px solid #0f0;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.2;
+            white-space: pre;
+            overflow: hidden;
+            max-height: 400px;
+            text-align: left;
+        }
+        .controls {
+            background: rgba(0, 50, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .control-btn {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .control-btn:hover {
+            background: #0ff;
+            box-shadow: 0 0 10px #0ff;
+        }
+        .info {
+            color: #ff0;
+            margin: 10px 0;
+        }
+        .score {
+            color: #0ff;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">🚀 SPACE BATTLE 🚀</h1>
+        
+        <div class="info">
+            <strong>Instructions:</strong> Copy the C++ code from online_version.cpp and paste it into an online C++ compiler like replit.com or onlinegdb.com
+        </div>
+        
+        <div class="controls">
+            <h3>🎮 Game Controls:</h3>
+            <button class="control-btn" onclick="alert('Use A/D keys to move left/right')">← → Move</button>
+            <button class="control-btn" onclick="alert('Use W/S keys to move up/down')">↑ ↓ Move</button>
+            <button class="control-btn" onclick="alert('Press Space to shoot')">⚡ Shoot</button>
+            <button class="control-btn" onclick="alert('Press Q to quit')">❌ Quit</button>
+        </div>
+        
+        <div class="score">
+            Score: <span id="score">0</span> | Health: <span id="health">100</span>
+        </div>
+        
+        <div class="game-screen" id="gameScreen">
+╔════════════════════════════════════════════════════════════╗
+║                                                              ║
+║                     🚀 SPACE BATTLE                      ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+╚════════════════════════════════════════════════════════════╝
+
+Press SPACE to start...
+        </div>
+        
+        <div class="info">
+            <strong>🌐 To Play Online:</strong><br>
+            1. Visit <a href="https://replit.com/languages/cpp17" target="_blank" style="color: #0ff;">replit.com</a><br>
+            2. Copy code from online_version.cpp<br>
+            3. Paste and click Run
+        </div>
+    </div>
+</body>
+</html>

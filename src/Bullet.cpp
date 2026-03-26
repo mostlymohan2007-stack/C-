@@ -1,165 +1,128 @@
 #include "Bullet.h"
 #include <iostream>
-#include <vector>
-#include <string>
+#include <cmath>
 
-Bullet::Bullet(BulletType type, float x, float y, float dirX, float dirY) 
-    : type(type), active(true), damage(10) {
-    
-    // Set bullet properties based on type
+Bullet::Bullet(BulletType type, float x, float y, float dirX, float dirY)
+    : type(type), active(true), animTimer(0.0f)
+{
     switch (type) {
         case BulletType::PLAYER:
-            speed = 500.0f;
+            speed = 520.0f;
             damage = 10;
             break;
         case BulletType::ENEMY:
-            speed = 300.0f;
+            speed = 310.0f;
             damage = 15;
             break;
     }
-    
+
     direction.x = dirX;
     direction.y = dirY;
-    
-    // Use simple colored rectangle for stability
-    texture.create(6, 12);
-    sf::Image image;
-    image.create(6, 12, type == BulletType::PLAYER ? sf::Color::Cyan : sf::Color::Red);
-    texture.update(image);
+
+    createBulletTexture();
     sprite.setTexture(texture);
     sprite.setPosition(x, y);
-    sprite.setOrigin(3.0f, 6.0f);
-    
-    std::cout << "Bullet initialized with simple colored rectangle" << std::endl;
+    sprite.setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);
+}
+
+void Bullet::createBulletTexture() {
+    if (type == BulletType::PLAYER) {
+        // Cyan laser bolt
+        const int W = 6, H = 18;
+        sf::Image img;
+        img.create(W, H, sf::Color::Transparent);
+        // Bright core
+        for (int y = 2; y < H - 2; ++y) {
+            img.setPixel(2, y, sf::Color(200, 240, 255));
+            img.setPixel(3, y, sf::Color(200, 240, 255));
+        }
+        // Glow edges
+        for (int y = 0; y < H; ++y) {
+            float alpha = 180.0f * (1.0f - std::abs(y - H/2.0f) / (H/2.0f));
+            if (y >= 0 && y < H) {
+                img.setPixel(1, y, sf::Color(100, 200, 255, static_cast<sf::Uint8>(alpha)));
+                img.setPixel(4, y, sf::Color(100, 200, 255, static_cast<sf::Uint8>(alpha)));
+            }
+        }
+        // Tip glow
+        img.setPixel(2, 0, sf::Color(255, 255, 255));
+        img.setPixel(3, 0, sf::Color(255, 255, 255));
+        texture.create(W, H);
+        texture.update(img);
+    } else {
+        // Orange-red plasma ball
+        const int W = 10, H = 10;
+        sf::Image img;
+        img.create(W, H, sf::Color::Transparent);
+        for (int y = 0; y < H; ++y) {
+            for (int x = 0; x < W; ++x) {
+                float dx = x - W/2.0f + 0.5f;
+                float dy = y - H/2.0f + 0.5f;
+                float dist = std::sqrt(dx*dx + dy*dy);
+                if (dist < W/2.0f) {
+                    float t = 1.0f - dist / (W/2.0f);
+                    img.setPixel(x, y, sf::Color(
+                        255,
+                        static_cast<sf::Uint8>(100 * t),
+                        50,
+                        static_cast<sf::Uint8>(230 * t)
+                    ));
+                }
+            }
+        }
+        texture.create(W, H);
+        texture.update(img);
+    }
 }
 
 void Bullet::update(float deltaTime) {
-    // Move the bullet
-    sprite.move(direction.x * speed * deltaTime, direction.y * speed * deltaTime);
+    animTimer += deltaTime;
+    sprite.move(direction.x * speed * deltaTime,
+                direction.y * speed * deltaTime);
+
+    // Pulsate alpha for enemy bullets
+    if (type == BulletType::ENEMY) {
+        float pulse = 0.8f + 0.2f * std::sin(animTimer * 15.0f);
+        sprite.setColor(sf::Color(255, 255, 255, static_cast<sf::Uint8>(200 * pulse)));
+    }
 }
 
-bool Bullet::isActive() const {
-    return active;
-}
+bool       Bullet::isActive()   const { return active; }
+void       Bullet::setActive(bool a)  { active = a; }
+BulletType Bullet::getType()    const { return type; }
+int        Bullet::getDamage()  const { return damage; }
 
-void Bullet::setActive(bool active) {
-    this->active = active;
-}
-
-BulletType Bullet::getType() const {
-    return type;
-}
-
-int Bullet::getDamage() const {
-    return damage;
-}
-
-sf::Vector2f Bullet::getPosition() const {
-    return sprite.getPosition();
-}
-
-void Bullet::setPosition(float x, float y) {
-    sprite.setPosition(x, y);
-}
+sf::Vector2f Bullet::getPosition() const { return sprite.getPosition(); }
+void         Bullet::setPosition(float x, float y) { sprite.setPosition(x, y); }
 
 void Bullet::render(sf::RenderWindow& window) {
-    if (active) {
-        window.draw(sprite);
-    }
-}
+    if (!active) return;
 
-sf::FloatRect Bullet::getBounds() const {
-    return sprite.getGlobalBounds();
-}
-
-bool Bullet::isOutOfBounds(float screenWidth, float screenHeight) const {
-    sf::Vector2f pos = sprite.getPosition();
-    return (pos.x < -50 || pos.x > screenWidth + 50 || 
-            pos.y < -50 || pos.y > screenHeight + 50);
-}
-
-void Bullet::loadUserBulletTextures() {
-    // Try to load custom bullet textures from multiple locations
-    std::vector<std::string> bulletPaths = {
-        "bullet.png",
-        "assets/bullet.png",
-        "d:/c++/bullet.png",
-        "d:/c++/SpaceBattleGame/bullet.png"
-    };
-    
-    // Try player bullet textures
+    // Draw glow halo first
+    sf::CircleShape glow;
     if (type == BulletType::PLAYER) {
-        std::vector<std::string> playerBulletPaths = {
-            "player_bullet.png",
-            "assets/player_bullet.png",
-            "d:/c++/player_bullet.png",
-            "d:/c++/SpaceBattleGame/player_bullet.png"
-        };
-        
-        for (const auto& path : playerBulletPaths) {
-            if (texture.loadFromFile(path)) {
-                std::cout << "Successfully loaded player bullet texture: " << path << std::endl;
-                return;
-            }
-        }
+        float glowR = 6.0f + 2.0f * std::abs(std::sin(animTimer * 10.0f));
+        glow.setRadius(glowR);
+        glow.setOrigin(glowR, glowR);
+        glow.setPosition(sprite.getPosition());
+        glow.setFillColor(sf::Color(80, 180, 255, 50));
+        window.draw(glow);
+    } else {
+        float glowR = 8.0f;
+        glow.setRadius(glowR);
+        glow.setOrigin(glowR, glowR);
+        glow.setPosition(sprite.getPosition());
+        glow.setFillColor(sf::Color(255, 80, 0, 60));
+        window.draw(glow);
     }
-    
-    // Try enemy bullet textures
-    if (type == BulletType::ENEMY) {
-        std::vector<std::string> enemyBulletPaths = {
-            "enemy_bullet.png",
-            "assets/enemy_bullet.png",
-            "d:/c++/enemy_bullet.png",
-            "d:/c++/SpaceBattleGame/enemy_bullet.png"
-        };
-        
-        for (const auto& path : enemyBulletPaths) {
-            if (texture.loadFromFile(path)) {
-                std::cout << "Successfully loaded enemy bullet texture: " << path << std::endl;
-                return;
-            }
-        }
-    }
-    
-    // Try generic bullet paths
-    for (const auto& path : bulletPaths) {
-        if (texture.loadFromFile(path)) {
-            std::cout << "Successfully loaded bullet texture: " << path << std::endl;
-            return;
-        }
-    }
-    
-    // Create fallback texture if no custom texture found
-    createFallbackBulletTexture();
+
+    window.draw(sprite);
 }
 
-void Bullet::createFallbackBulletTexture() {
-    // Create a simple colored rectangle as fallback
-    texture.create(6, 12);
-    sf::Image image;
-    
-    switch (type) {
-        case BulletType::PLAYER:
-            image.create(6, 12, sf::Color::Cyan);
-            std::cout << "Created cyan player bullet fallback texture" << std::endl;
-            break;
-        case BulletType::ENEMY:
-            image.create(6, 12, sf::Color::Red);
-            std::cout << "Created red enemy bullet fallback texture" << std::endl;
-            break;
-    }
-    
-    texture.update(image);
-}
+sf::FloatRect Bullet::getBounds() const { return sprite.getGlobalBounds(); }
 
-void Bullet::promptUserUpload() {
-    std::cout << "=== BULLET TEXTURE UPLOAD GUIDE ===" << std::endl;
-    std::cout << "To add custom bullet textures:" << std::endl;
-    std::cout << "1. Player bullets: Place 'player_bullet.png' in game directory" << std::endl;
-    std::cout << "2. Enemy bullets: Place 'enemy_bullet.png' in game directory" << std::endl;
-    std::cout << "3. Universal bullets: Place 'bullet.png' in game directory" << std::endl;
-    std::cout << "4. Supported locations: Game folder, d:/c++, d:/c++/SpaceBattleGame/" << std::endl;
-    std::cout << "5. Recommended size: 6x12 pixels" << std::endl;
-    std::cout << "6. Restart game after adding images" << std::endl;
-    std::cout << "======================================" << std::endl;
+bool Bullet::isOutOfBounds(float screenW, float screenH) const {
+    sf::Vector2f pos = sprite.getPosition();
+    return (pos.x < -30 || pos.x > screenW + 30 ||
+            pos.y < -30 || pos.y > screenH + 30);
 }

@@ -10,46 +10,34 @@ enum class BulletType {
 
 class Bullet {
 private:
-    sf::Sprite sprite;
-    sf::Texture texture;
-    
-    BulletType type;
-    float speed;
+    sf::Sprite   sprite;
+    sf::Texture  texture;
+    BulletType   type;
+    bool         active;
+    int          damage;
+    float        speed;
     sf::Vector2f direction;
-    bool active;
-    int damage;
-    
-    void loadUserBulletTextures();
-    void createFallbackBulletTexture();
-    
+    float        animTimer;
+
+    void createBulletTexture();
+
 public:
-    Bullet(BulletType type = BulletType::PLAYER, float x = 0.0f, float y = 0.0f, 
-           float dirX = 0.0f, float dirY = -1.0f);
-    
-    // Movement methods
+    Bullet(BulletType type, float x, float y, float dirX, float dirY);
+
     void update(float deltaTime);
-    
-    // Status methods
-    bool isActive() const;
-    void setActive(bool active);
-    BulletType getType() const;
-    int getDamage() const;
-    
-    // Position methods
-    sf::Vector2f getPosition() const;
-    void setPosition(float x, float y);
-    
-    // Rendering
+
+    bool       isActive()  const;
+    void       setActive(bool active);
+    BulletType getType()   const;
+    int        getDamage() const;
+
+    sf::Vector2f  getPosition()          const;
+    void          setPosition(float x, float y);
+
     void render(sf::RenderWindow& window);
-    
-    // Bounds for collision detection
+
     sf::FloatRect getBounds() const;
-    
-    // Check if bullet is out of screen bounds
     bool isOutOfBounds(float screenWidth, float screenHeight) const;
-    
-    // User upload functionality
-    void promptUserUpload();
 };
 
 #endif // BULLET_H

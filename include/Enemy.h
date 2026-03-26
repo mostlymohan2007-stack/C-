@@ -2,73 +2,72 @@
 #define ENEMY_H
 
 #include <SFML/Graphics.hpp>
+#include <string>
 
 enum class EnemyType {
-    BASIC,
-    FAST,
-    HEAVY
+    BASIC,   // 👽 Alien
+    FAST,    // 🤖 Robot drone
+    HEAVY    // 👹 Demon overlord
 };
 
 class Enemy {
 private:
-    sf::Sprite sprite;
+    sf::Sprite  sprite;
     sf::Texture texture;
-    
-    EnemyType type;
-    float speed;
-    int health;
-    int maxHealth;
-    float fireRate;
-    float fireTimer;
-    float shootChance;
+
+    EnemyType   type;
+    float       speed;
+    int         health;
+    int         maxHealth;
+    float       fireRate;
+    float       fireTimer;
+    float       shootChance;
     sf::Vector2f direction;
-    
-    void loadUserEnemyTextures();
+
+    float  animTimer;
+    float  wobblePhase;
+    float  flashTimer;
+    float  baseScaleX;
+    float  baseScaleY;
+    int    scoreValue;
+    bool   hasRealTexture;  // true when a PNG asset was loaded
+
     void createFallbackEnemyTexture();
-    
+
 public:
     Enemy(EnemyType type = EnemyType::BASIC, float x = 0.0f, float y = 0.0f);
-    
-    // Movement methods
+
+    // SFML sprite holds a raw ptr to texture -- must re-bind after any copy
+    Enemy(const Enemy& other);
+    Enemy& operator=(const Enemy& other);
+
     void update(float deltaTime);
     void setDirection(float x, float y);
-    
-    // Combat methods
+
     bool canShoot();
     bool shouldShoot();
     void resetFireTimer();
     void takeDamage(int damage);
-    
-    // Status methods
-    bool isAlive() const;
-    EnemyType getType() const;
-    int getHealth() const;
-    
-    // Position methods
-    sf::Vector2f getPosition() const;
-    void setPosition(float x, float y);
-    
-    // Rendering
+
+    bool      isAlive()     const;
+    EnemyType getType()     const;
+    int       getHealth()   const;
+    int       getScoreValue() const;
+
+    sf::Vector2f getPosition()         const;
+    void         setPosition(float x, float y);
+
     void render(sf::RenderWindow& window);
-    
-    // Bounds for collision detection
+
     sf::FloatRect getBounds() const;
-    
-    // Get sprite for collision detection
-    sf::Sprite getSprite() const;
-    
-    // Texture management
-    void setTexture(const std::string& texturePath);
-    bool loadTexture(const std::string& texturePath);
-    
-    // Speed management
-    void setSpeed(float speed);
+    sf::Sprite    getSprite() const;
+
+    void  setTexture(const std::string& texturePath);
+    bool  loadTexture(const std::string& texturePath);
+
+    void  setSpeed(float speed);
     float getSpeed() const;
-    
-    // Score value when destroyed
-    int getScoreValue() const;
-    
-    // User upload functionality
+
     void promptUserUpload();
 };
 
